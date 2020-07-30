@@ -13,5 +13,4 @@ public class SpringAgZuulApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SpringAgZuulApplication.class, args);
 	}
-
 }

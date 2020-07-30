@@ -13,18 +13,17 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private Environment environment;
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.headers().frameOptions().disable();
         http.authorizeRequests()
-                .antMatchers(environment.getProperty("api.h2.console.url.path")).permitAll()
-                .antMatchers(HttpMethod.POST, environment.getProperty("api.reg.url.path")).permitAll()
-                .antMatchers(HttpMethod.POST, environment.getProperty("api.login.url.path")).permitAll()
-                .anyRequest().authenticated();
+                .antMatchers("/user-ms/h2-console/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/user-ms/api/v1/user").permitAll()
+                .antMatchers(HttpMethod.POST, "/user-ms/login").permitAll()
+                .anyRequest().authenticated()
+        .and()
+        .addFilter(new AuthorizationFilter(authenticationManager()));
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 }
